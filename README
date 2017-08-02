@@ -1,0 +1,3 @@
+Run setup.sh for base setup (useful packages + copy config files to home), and run dwm-setup.sh to set everything up for X and dwm.
+
+NOTE: make sure to run with sudo -E so that it can run apt-get, but things will still go to the correct home directory, rather than root's

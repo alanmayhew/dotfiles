@@ -1,0 +1,5 @@
+! uxterm*font: *-fixed-*-*-*-72-*
+! Terminus:style=Regular:size=36
+xterm*faceName: FiraMono:size=11:antialias=true
+xterm*Background: black
+xterm*Foreground: green
