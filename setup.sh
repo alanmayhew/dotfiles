@@ -1,13 +1,16 @@
 #!/bin/sh
 
 # INSTALL PACKAGES
-apt-get update
-apt-get upgrade
-apt-get install zsh tmux gcc vim git make nmap zsh python python-pip zip -y
-
-# SHELL SETTINGS
-# chsh -s $(which zsh) # nvm we're running as root
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install zsh tmux gcc vim git make nmap zsh python python-pip zip -y
 
 cp dotfiles/.* ~/
 
-echo "Make sure to change shell to zsh with   chsh -s $(which zsh)"
+echo ""
+echo ""
+echo "======================================================================"
+echo "= changing your shell to zsh... (you'll need to enter your password) ="
+echo "======================================================================"
+echo ""
+chsh -s $(which zsh)

@@ -17,7 +17,7 @@ static const char col_cyan[]        = "#005577";
 static const char col_purple[]      = "#550066";
 static const char col_green[]       = "#116600";
 static const char col_orange[]      = "#FF8400";
-static const char *colors[SchemeLast][3]      = {
+static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel] =  { col_gray4, col_purple,  col_purple  },
@@ -68,10 +68,10 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 // static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *dmenucmd[] = { "dmenu_run", NULL, NULL, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 // terminal command
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "uxterm", NULL };
 // screen lock command
 // static const char* lockcmd[] = {"i3lock", NULL};
-static const char* lockcmd[] = {"/home/mayhea/lock.sh", NULL};
+static const char* lockcmd[] = {"/home/USERNAME/lock.sh", NULL};
 // screen brightness control commands
 static const char* brightnessupcmd[] = {"xbacklight", "-inc", "10", NULL}; // up
 static const char* brightnessdncmd[] = {"xbacklight", "-dec", "10", NULL}; // down
