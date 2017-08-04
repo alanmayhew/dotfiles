@@ -1,4 +1,4 @@
-xrdb /home/mayhea/.Xresources
+xrdb ~/.Xresources
 # xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 1
 # xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 2
 # xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Timeout" 200
@@ -8,5 +8,5 @@ xrdb /home/mayhea/.Xresources
 # feh --randomize --bg-fill ~/wallpapers/franku/*
 # feh --bg-fill ~/wallpapers/franku/onigiri.png
 redshift -l 42.7:73.7 &
-/home/mayhea/dwm-src/mystatus/stbar.sh &
+# /home/mayhea/dwm-src/mystatus/stbar.sh &
 exec dwm
