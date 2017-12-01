@@ -39,8 +39,6 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 alias ls='ls --color=auto'
 alias la='ls -lah'
 alias lad='la | grep "^d"'
-alias lrm='la -latr | tail'
-alias emacs='vim'
-alias home='pushd ~'
+alias lmr='la -latr | tail'
 
 export PATH=$HOME/local/bin:$PATH
