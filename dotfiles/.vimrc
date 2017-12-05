@@ -8,9 +8,11 @@ set nu
 set backspace=indent,eol,start
 set formatoptions-=cro
 
-" MAPS
+" MAPS (NON-PLUGIN)
 map <silent> <C-h> :noh<CR>
 nnoremap <leader>s :%s/\<<C-r><C-w>\>//gc<left><left><left>
+nnoremap <C-l> :tabmove +1<CR>
+nnoremap <C-h> :tabmove -1<CR>
 imap jj <Esc>
 
 " MACROS
@@ -37,3 +39,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'tpope/vim-surround'
 call plug#end()
+
+" MAPS (PLUGINS)
+let g:ctrlp_map = '<leader>o'
+nnoremap <leader>tr :TabooRename<space>
