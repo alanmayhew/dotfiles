@@ -11,8 +11,9 @@ set formatoptions-=cro
 " MAPS (NON-PLUGIN)
 map <silent> <C-h> :noh<CR>
 nnoremap <leader>s :%s/\<<C-r><C-w>\>//gc<left><left><left>
-nnoremap <C-l> :tabmove +1<CR>
-nnoremap <C-h> :tabmove -1<CR>
+nnoremap <silent> L :tabmove +1<CR>
+nnoremap <silent> H :tabmove -1<CR>
+nnoremap <silent> <leader>n :tabnew<CR>
 imap jj <Esc>
 
 " MACROS
@@ -38,8 +39,13 @@ Plug 'easymotion/vim-easymotion'
 Plug 'airblade/vim-gitgutter'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'tpope/vim-surround'
+Plug 'leafgarland/typescript-vim'
+Plug 'pangloss/vim-javascript'
 call plug#end()
 
 " MAPS (PLUGINS)
 let g:ctrlp_map = '<leader>o'
 nnoremap <leader>tr :TabooRename<space>
+
+" OPTIONS (PLUGINS)
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
