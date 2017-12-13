@@ -44,7 +44,6 @@ Plug 'pangloss/vim-javascript'
 call plug#end()
 
 " MAPS (PLUGINS)
-let g:ctrlp_map = '<leader>o'
 nnoremap <leader>tr :TabooRename<space>
 
 " OPTIONS (PLUGINS)
