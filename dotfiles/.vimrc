@@ -15,6 +15,8 @@ nnoremap <silent> L :tabmove +1<CR>
 nnoremap <silent> H :tabmove -1<CR>
 nnoremap <silent> <leader>n :tabnew<CR>
 imap jj <Esc>
+nmap <Space> <leader><leader>
+vmap <Space> <leader><leader>
 
 " MACROS
 let @p='"_diwP'
@@ -33,12 +35,14 @@ silent !mkdir -p ~/.vim/plugs
 " PLUGINS
 call plug#begin('~/.vim/plugs')
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-speeddating'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'gcmt/taboo.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'airblade/vim-gitgutter'
 Plug 'dhruvasagar/vim-table-mode'
-Plug 'tpope/vim-surround'
 Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
 call plug#end()
@@ -48,3 +52,5 @@ nnoremap <leader>tr :TabooRename<space>
 
 " OPTIONS (PLUGINS)
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:table_mode_corner_corner='+'
+let g:table_mode_header_fillchar='='
