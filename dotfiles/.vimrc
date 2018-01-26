@@ -23,6 +23,8 @@ let @p='"_diwP'
 
 " ALIASES
 command GGT GitGutterSignsToggle
+command Hex %!xxd
+command Unhex %!xxd -r
 
 " VIM-PLUG SETUP
 if empty(glob('~/.vim/autoload/plug.vim'))
