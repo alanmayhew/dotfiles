@@ -1,5 +1,4 @@
-setup.sh
-----------------------------------------
+# setup.sh
 Run setup.sh from the directory containing it for base setup. This will install
 useful packages and copy config files to your home directory.
 
@@ -7,10 +6,8 @@ After installing packages, it will prompt for your email to fill in that part of
 the git config, and then it will prompt for your password in order to change
 your shell to zsh.
 
-
-dwm-setup.sh
-----------------------------------------
+# dwm-setup.sh
 Run dwm-setup.sh (with sudo -E) to set everything up for X and dwm.
 
-NOTE: make sure to run the dwm script with sudo -E so that it gets sudo'd but
-puts stuff in the right home directory
+> **NOTE:** make sure to run the dwm script with sudo -E so that it gets sudo'd
+> but puts stuff in the right home directory
