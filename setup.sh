@@ -3,9 +3,12 @@
 # INSTALL PACKAGES
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install zsh tmux gcc vim git make nmap zsh python python-pip zip -y
+sudo apt-get install zsh tmux gcc vim git make python python-pip zip htop -y
 
 cp dotfiles/.* ~/
+
+read -p "Enter email (for git config): " email
+sed "s/~EMAIL~/$email/" dotfiles/gitconfig.template > ~/.gitconfig
 
 echo ""
 echo ""

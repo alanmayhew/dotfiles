@@ -1,0 +1,7 @@
+[user]
+	email = ~EMAIL~
+	name = Alan Mayhew
+[core]
+	editor = vim
+[alias]
+	st = status

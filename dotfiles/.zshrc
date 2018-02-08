@@ -40,5 +40,7 @@ alias ls='ls --color=auto'
 alias la='ls -lah'
 alias lad='la | grep "^d"'
 alias lmr='la -latr | tail'
+alias hvim='vim -c "silent Hex"'
+alias svim='sudo -E vim'
 
 export PATH=$HOME/local/bin:$PATH
