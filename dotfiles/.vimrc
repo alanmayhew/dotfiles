@@ -17,6 +17,7 @@ nnoremap <silent> <leader>n :tabnew<CR>
 imap jj <Esc>
 nmap <Space> <leader><leader>
 vmap <Space> <leader><leader>
+nmap co yygccp
 
 " MACROS
 let @p='"_diwP'

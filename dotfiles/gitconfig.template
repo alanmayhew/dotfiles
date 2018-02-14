@@ -1,7 +1,19 @@
 [user]
 	email = ~EMAIL~
 	name = Alan Mayhew
+
 [core]
 	editor = vim
+
 [alias]
 	st = status
+
+[color]
+    status = auto
+
+[color "status"]
+    branch = green
+    added = green
+    changed = yellow
+    untracked = magenta
+    deleted = red
