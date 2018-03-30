@@ -7,6 +7,7 @@ set hlsearch
 set nu
 set backspace=indent,eol,start
 set formatoptions-=cro
+set updatetime=500
 
 " MAPS (NON-PLUGIN)
 map <silent> <C-h> :noh<CR>
