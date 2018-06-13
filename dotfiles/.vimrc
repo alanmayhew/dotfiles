@@ -49,6 +49,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
+Plug 'junegunn/vim-emoji'
 call plug#end()
 
 " MAPS (PLUGINS)
