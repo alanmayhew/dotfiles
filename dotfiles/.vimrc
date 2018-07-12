@@ -16,21 +16,43 @@ if has('gui_running')
 endif
 
 " MAPS (NON-PLUGIN)
-map <silent> <C-h> :noh<CR>
+noremap <silent> <C-h> :noh<CR>
 nnoremap <leader>s :%s/\<<C-r><C-w>\>//gc<left><left><left>
 nnoremap <silent> L :tabmove +1<CR>
 nnoremap <silent> H :tabmove -1<CR>
 nnoremap <silent> <leader>n :tabnew<CR>
-imap jj <Esc>
-nmap <Space> <leader><leader>
-vmap <Space> <leader><leader>
-nmap co yygccp
-nmap cp "_ciw<C-r>"<Esc>
+inoremap jj <Esc>
+map <Space> <Plug>(easymotion-prefix)
+nnoremap co yygccp
+nnoremap cp "_ciw<C-r>"<Esc>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>rn :call ToggleRNU()<CR>
 
-" ALIASES
-command GGT GitGutterSignsToggle
-command Hex %!xxd
-command Unhex %!xxd -r
+" MAPS (PLUGINS)
+nnoremap <leader>tr :TabooRename<space>
+
+" COMMANDS
+command! GGT GitGutterSignsToggle
+if !has("win32")
+    command! Hex %!xxd
+    command! Unhex %!xxd -r
+endif
+
+" FUNCTIONS
+function! ToggleRNU()
+    set invrnu
+    if &rnu
+        augroup numbertoggle
+            autocmd!
+            autocmd BufEnter,FocusGained,InsertLeave * set rnu
+            autocmd BufLeave,FocusLost,InsertEnter * set nornu
+        augroup END
+    else
+        augroup numbertoggle
+            autocmd!
+        augroup END
+    endif
+endfunction
 
 " VIM-PLUG SETUP
 if has("win32")
@@ -76,9 +98,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'junegunn/vim-emoji'
 call plug#end()
-
-" MAPS (PLUGINS)
-nnoremap <leader>tr :TabooRename<space>
 
 " OPTIONS (PLUGINS)
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
