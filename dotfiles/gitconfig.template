@@ -8,6 +8,7 @@
 [alias]
 	st = status
     co = checkout
+    stdiff = diff --staged
 
 [color]
     status = auto
