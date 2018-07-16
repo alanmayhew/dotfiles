@@ -33,7 +33,7 @@ nnoremap <leader>s :%s/\<<C-r><C-w>\>//gc<left><left><left>
 inoremap jj <Esc>
 inoremap jk <Esc>
 " settings / UI
-nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>vs :source $MYVIMRC<CR>
 nnoremap <leader>rn :call ToggleRNU()<CR>
 " misc
 nmap co yygccp
