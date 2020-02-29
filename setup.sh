@@ -3,7 +3,7 @@
 # INSTALL PACKAGES
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install zsh tmux gcc vim git make python python-pip zip htop -y
+sudo apt-get install zsh tmux gcc vim ctags git make python3 python3-pip zip htop curl wget -y
 
 cp dotfiles/.* ~/
 

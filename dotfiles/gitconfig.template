@@ -8,7 +8,10 @@
 [alias]
 	st = status
     co = checkout
+    ai = add -i
     stdiff = diff --staged
+    stl = stash list
+    sts = "!f() { git stash show -p stash@{$1}; }; f"
 
 [color]
     status = auto
