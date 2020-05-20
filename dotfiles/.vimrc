@@ -134,14 +134,6 @@ endif
 vnoremap <leader>q :normal @q<CR>
 vnoremap <leader>d :g/^\s*$/d<CR>:noh<CR>
 
-" Replace text in visual selection or motion with what's in the " register
-nnoremap <silent> cp :set opfunc=ReplaceWithYanked<CR>g@
-vnoremap <silent> cp :<C-U>call ReplaceWithYanked(visualmode(), 1)<CR>
-
-" Convert the text in the selection or motion to sPoNgEcAsE
-nnoremap <silent> <leader>c :set opfunc=SpongeCase<CR>g@
-vnoremap <silent> <leader>c :<C-U> call SpongeCase(visualmode(), 1)<CR>
-
 "===============================================================================
 "                               MAPS (PLUGINS)
 "===============================================================================
@@ -149,11 +141,14 @@ map <Space> <Plug>(easymotion-prefix)
 nnoremap <leader>tr :TabooRename<space>
 nnoremap <leader>tm :TableModeToggle
 nnoremap <leader>ig :IndentLinesToggle<CR>
+" Git
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gg :Git grep -n --color=ALWAYS<Space>
 
 "===============================================================================
 "                                  COMMANDS
 "===============================================================================
-command! GGT GitGutterSignsToggle
 command! Hex %!xxd
 command! Unhex %!xxd -r
 
@@ -177,9 +172,9 @@ function! ToggleRNU()
     endif
 endfunction
 
-" replace an area from a visual selection or motion with what's in the "
-" register (used with the cp{motion} mapping)
-function! ReplaceWithYanked(type, ...)
+" Execute a command string on a block of text from a motion or visual
+" selection (doesn't use 'silent!' just in case errors matter)
+function! s:ExecOnBlock(cmd_str, type, ...)
     if a:0
         silent exe "normal! gv"
     elseif a:type == "line"
@@ -187,21 +182,52 @@ function! ReplaceWithYanked(type, ...)
     else
         silent exe "normal! `[v`]"
     endif
-    silent exe "normal! ".'"'."_c\<C-R>".'"'."\<Esc>"
+    silent exe a:cmd_str
 endfunction
 
-" Convert text to sPoNgEbOb
-function! SpongeCase(type, ...)
-    if a:0
-        silent exe "normal! gv"
-    elseif a:type == "line"
-        silent exe "normal! '[V']"
-    else
-        silent exe "normal! `[v`]"
-    endif
-    ":s/\([a-z]\)\(\s*\)\([a-z]\)\c/\l\1\2\u\3/g
-    silent exe "normal! :s/\\%V\\([a-z]\\)\\([^a-z]*\\)\\([a-z]\\)\\c/\\l\\1\\2\\u\\3/g\<CR>"
+" Used in conjunction with a function that calls s:ExecOnBindBlock, to bind it
+" to the same binding in visual and normal mode such that it will be called
+" properly
+function! s:BindBlockFunction(binding, funcname)
+    let l:normal_bind_cmd =
+            \ printf(
+                \ "nnoremap <silent> %s :set opfunc=%s<CR>g@",
+                \ a:binding, a:funcname
+            \ )
+    let l:visual_bind_cmd =
+            \ printf(
+                \ "vnoremap <silent> %s :<C-U> call %s(visualmode(), 1)<CR>",
+                \ a:binding, a:funcname
+            \ )
+    silent exe l:normal_bind_cmd
+    silent exe l:visual_bind_cmd
 endfunction
+
+" Replaces text in a motion or visual selection with what's currently in the
+" unnamed register, without changing the value in the register
+let s:replace_with_yank = "normal! ".'"'."_c\<C-R>".'"'."\<Esc>"
+function! ReplaceWithYanked(type, ...)
+    call function("s:ExecOnBlock", [s:replace_with_yank, a:type] + a:000)()
+endfunction
+call s:BindBlockFunction("cp", "ReplaceWithYanked")
+
+" Converts text in camelCase to be lowercase_with_underscores
+let s:camel_to_lower_cmd =
+            \ "normal! :s/\\%V\\(\\w\\)\\([A-Z]\\)/".
+            \ "\\1_\\l\\2/g\<CR>"
+function! CamelToLower(type, ...)
+    silent! call function("s:ExecOnBlock", [s:camel_to_lower_cmd, a:type] + a:000)()
+endfunction
+call s:BindBlockFunction("<leader>c", "CamelToLower")
+
+" Converts text to sPoNgEbOb MoCkInG cAsE
+let s:spongecase_cmd =
+        \ "normal! :s/\\%V\\([a-z]\\)\\([^a-z]*\\)\\([a-z]\\)\\c/"
+        \ ."\\l\\1\\2\\u\\3/g\<CR>"
+function! SpongeCase(type, ...)
+    silent! call function("s:ExecOnBlock", [s:spongecase_cmd, a:type] + a:000)()
+endfunction
+call s:BindBlockFunction("<leader>m", "SpongeCase")
 
 
 "===============================================================================
