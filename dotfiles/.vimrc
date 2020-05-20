@@ -131,14 +131,16 @@ if exists(":Commentary")
 else
     nmap co yyP
 endif
-nnoremap <silent> cp :set opfunc=ReplaceWithYanked<CR>g@
-    " cp{motion}        Replace the text that {motion} moves over with the text
-    "                   from the " register
-vnoremap <silent> cp :<C-U>call ReplaceWithYanked(visualmode(), 1)<CR>
-    " {Visual}cp        Replaces the highlighted text with the text from the "
-    "                   register
 vnoremap <leader>q :normal @q<CR>
 vnoremap <leader>d :g/^\s*$/d<CR>:noh<CR>
+
+" Replace text in visual selection or motion with what's in the " register
+nnoremap <silent> cp :set opfunc=ReplaceWithYanked<CR>g@
+vnoremap <silent> cp :<C-U>call ReplaceWithYanked(visualmode(), 1)<CR>
+
+" Convert the text in the selection or motion to sPoNgEcAsE
+nnoremap <silent> <leader>c :set opfunc=SpongeCase<CR>g@
+vnoremap <silent> <leader>c :<C-U> call SpongeCase(visualmode(), 1)<CR>
 
 "===============================================================================
 "                               MAPS (PLUGINS)
@@ -146,6 +148,7 @@ vnoremap <leader>d :g/^\s*$/d<CR>:noh<CR>
 map <Space> <Plug>(easymotion-prefix)
 nnoremap <leader>tr :TabooRename<space>
 nnoremap <leader>tm :TableModeToggle
+nnoremap <leader>ig :IndentLinesToggle<CR>
 
 "===============================================================================
 "                                  COMMANDS
@@ -186,6 +189,20 @@ function! ReplaceWithYanked(type, ...)
     endif
     silent exe "normal! ".'"'."_c\<C-R>".'"'."\<Esc>"
 endfunction
+
+" Convert text to sPoNgEbOb
+function! SpongeCase(type, ...)
+    if a:0
+        silent exe "normal! gv"
+    elseif a:type == "line"
+        silent exe "normal! '[V']"
+    else
+        silent exe "normal! `[v`]"
+    endif
+    ":s/\([a-z]\)\(\s*\)\([a-z]\)\c/\l\1\2\u\3/g
+    silent exe "normal! :s/\\%V\\([a-z]\\)\\([^a-z]*\\)\\([a-z]\\)\\c/\\l\\1\\2\\u\\3/g\<CR>"
+endfunction
+
 
 "===============================================================================
 "                                COLOR SCHEME
