@@ -151,6 +151,7 @@ nnoremap <leader>gg :Git grep -n --color=ALWAYS<Space>
 "===============================================================================
 command! Hex %!xxd
 command! Unhex %!xxd -r
+command! TrailingWhitespace silent execute "normal! :%s/\\s\\+$//g\<CR>"
 
 "===============================================================================
 "                                 FUNCTIONS
