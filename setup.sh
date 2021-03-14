@@ -8,7 +8,7 @@ sudo apt-get install zsh tmux gcc vim ctags git make python3 python3-pip zip hto
 cp dotfiles/.* ~/
 
 read -p "Enter email (for git config): " email
-sed "s/~EMAIL~/$email/" dotfiles/gitconfig.template > ~/.gitconfig
+sed "s/~EMAIL~/$email/" ./gitconfig.template > ~/.gitconfig
 
 echo ""
 echo ""
