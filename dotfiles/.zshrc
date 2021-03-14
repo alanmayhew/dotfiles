@@ -45,9 +45,19 @@ alias lmr='la -latr | tail'
 alias hvim='vim -c "silent Hex"'
 alias svim='sudo -E vim'
 
+alias gd='git diff'
+alias gds='git stdiff'
+alias gst='git status'
+
 alias python='python3'
 
+alias dev="$HOME/env.sh"
+
 export PATH=$HOME/local/bin:$PATH
+
+elfinfo () {
+    cat <(readelf -a "$1") <(objdump -M intel -d "$1") | less
+}
 
 truecolor() {
     awk 'BEGIN{
@@ -64,5 +74,10 @@ truecolor() {
         printf "\n";
     }'
 }
+
+LS_COLORS_PATH="$HOME/LS_COLORS/lscolors.sh"
+if [ -e "$LS_COLORS_PATH" ]; then
+    . "$LS_COLORS_PATH"
+fi
 
 stty -ixon
