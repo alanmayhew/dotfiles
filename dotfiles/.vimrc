@@ -1,6 +1,6 @@
-"===============================================================================
+"==============================================================================
 "                              GENERAL SETTINGS
-"===============================================================================
+"==============================================================================
 silent! colorscheme desert
 syntax on
 filetype plugin indent on
@@ -11,6 +11,10 @@ set backspace=indent,eol,start
 set formatoptions=tq
 set updatetime=500
 set colorcolumn=80
+set belloff=all
+set autoindent
+set splitright
+set textwidth=79
 if has('gui_running')
     set mouse=v
     if has("win32")
@@ -31,11 +35,11 @@ if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
- endif
+endif
 
-"===============================================================================
+"==============================================================================
 "                               VIM-PLUG SETUP
-"===============================================================================
+"==============================================================================
 if has("win32")
     " WINDOWS
     if glob("$VIM/_vimrc")
@@ -60,9 +64,9 @@ else
     silent !mkdir -p ~/.vim/plugs
 endif
 
-"===============================================================================
+"==============================================================================
 "                                  PLUGINS
-"===============================================================================
+"==============================================================================
 if has("win32")
     call plug#begin('~/vimfiles/plugs')
 else
@@ -73,8 +77,12 @@ endif
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-" Plug 'mhinz/vim-signify'
-Plug 'airblade/vim-gitgutter'
+if has('nvim') || has('patch-8.0.902')
+    Plug 'mhinz/vim-signify'
+else
+    Plug 'mhinz/vim-signify', {'branch': 'legacy'}
+endif
+" Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-speeddating'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'gcmt/taboo.vim'
@@ -82,11 +90,13 @@ Plug 'easymotion/vim-easymotion'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'yggdroot/indentline'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'hauleth/vim-backscratch'
 
 " Language specific
 Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'nvie/vim-flake8'
+Plug 'stephpy/vim-yaml'
 
 " Misc
 Plug 'junegunn/vim-emoji'
@@ -99,10 +109,10 @@ Plug 'morhetz/gruvbox'
 call plug#end()
 
 
-"===============================================================================
+"==============================================================================
 "                             MAPS (NON-PLUGIN)
-"===============================================================================
-"........................................................................ TABS
+"==============================================================================
+"......................................................................... TABS
 nnoremap <silent> L :tabnext<CR>
 nnoremap <silent> H :tabprevious<CR>
 nnoremap <silent> [t :tabmove -1<CR>
@@ -122,21 +132,21 @@ nnoremap <leader>rn :call ToggleRNU()<CR>
 nnoremap <C-o> <C-w>}
 nnoremap <C-i> <C-w>z
 "......................................................................... MISC
-if exists(":Commentary")
-    " co                Comments the current line and puts an uncommented copy
-    "                   below it (relies on vim-commentary plugin; if it's not
-    "                   present, the mapping will instead yank and paste above
-    "                   the current line for easy manual commenting)
-    nmap co yygccp
-else
+" This 'co' binding is rebound after vim-commentary is loaded. This is the
+" default version for when the plugin doesn't exist, which just yanks the line
+" and pastes it above for easy manual commenting. The conditional is to
+" prevent it overriding the other binding if .vimrc is re-sourced
+if !exists("g:loaded_commentary")
     nmap co yyP
 endif
 vnoremap <leader>q :normal @q<CR>
 vnoremap <leader>d :g/^\s*$/d<CR>:noh<CR>
+nnoremap <leader>l :LabelComment<CR>
+nnoremap <leader><leader>l :LabelCommentFull<CR>
 
-"===============================================================================
+"==============================================================================
 "                               MAPS (PLUGINS)
-"===============================================================================
+"==============================================================================
 map <Space> <Plug>(easymotion-prefix)
 nnoremap <leader>tr :TabooRename<space>
 nnoremap <leader>tm :TableModeToggle
@@ -146,16 +156,18 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gg :Git grep -n --color=ALWAYS<Space>
 
-"===============================================================================
+"==============================================================================
 "                                  COMMANDS
-"===============================================================================
+"==============================================================================
 command! Hex %!xxd
 command! Unhex %!xxd -r
 command! TrailingWhitespace silent execute "normal! :%s/\\s\\+$//g\<CR>"
+command! LabelComment call s:LabelCommentPromptLabel()
+command! LabelCommentFull call s:LabelCommentPromptFull()
 
-"===============================================================================
+"==============================================================================
 "                                 FUNCTIONS
-"===============================================================================
+"==============================================================================
 " toggle relative line numbers autocmd (when relativenumber is set, only keep
 " it set in the buffer with focus, and disable it in insert mode)
 function! ToggleRNU()
@@ -230,17 +242,51 @@ function! SpongeCase(type, ...)
 endfunction
 call s:BindBlockFunction("<leader>m", "SpongeCase")
 
+function! s:RightJustifiedLabel(...)
+    let l:text = get(a:, 1, "")
+    if strchars(l:text) > 0
+        let l:text = ' ' . l:text
+    endif
+    let l:fillchar = get(a:, 2, '')
+    if strchars(l:fillchar) <= 0
+        let l:fillchar = '-'
+    endif
+    let l:width = get(a:, 3, &textwidth)
+    if l:width == 0
+        let l:width = 80
+    endif
 
-"===============================================================================
+    let l:line = getline('.')
+    let l:linefmt = l:line . ' ' . &commentstring
+    let l:nopad = printf(l:linefmt, l:text)
+    let l:padlen = max([0, l:width-strchars(l:nopad)])
+    let l:pad = repeat(l:fillchar, l:padlen/strchars(l:fillchar))
+    let l:new_line = printf(l:linefmt, l:pad . l:text)
+    call setline('.', l:new_line)
+endfunction
+
+function! s:LabelCommentPromptLabel()
+    let l:label = input("Label: ")
+    call s:RightJustifiedLabel(l:label)
+endfunction
+
+function! s:LabelCommentPromptFull()
+    let l:padchar = nr2char(getchar())
+    let l:label = input("Label: ")
+    call s:RightJustifiedLabel(l:label, l:padchar)
+endfunction
+
+
+"==============================================================================
 "                                COLOR SCHEME
-"===============================================================================
+"==============================================================================
 let g:jellybeans_use_gui_italics = 0
 let g:gruvbox_italic = 0
 silent! colorscheme gruvbox
 
-"===============================================================================
+"==============================================================================
 "                             OPTIONS (PLUGINS)
-"===============================================================================
+"==============================================================================
 let g:ctrlp_user_command = {
 \     'types': {
 \         1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
@@ -251,3 +297,5 @@ let g:ctrlp_user_command = {
 
 let g:table_mode_corner_corner='+'
 let g:table_mode_header_fillchar='='
+let g:vim_json_syntax_conceal = 0
+let g:signify_sign_change='~'
