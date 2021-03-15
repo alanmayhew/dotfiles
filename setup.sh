@@ -37,7 +37,7 @@ prompt_check () {
 if (prompt_check "Update and install packages"); then
     sudo apt-get update
     sudo apt-get upgrade
-    sudo apt-get install zsh tmux gcc vim ctags git make python3 python3-pip flake8 zip htop curl wget -y
+    sudo apt-get install zsh tmux gcc vim ctags git make python3 python3-pip flake8 zip htop curl wget rsync -y
 fi
 
 # DOTFILES

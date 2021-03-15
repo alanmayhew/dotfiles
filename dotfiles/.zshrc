@@ -75,7 +75,7 @@ truecolor() {
     }'
 }
 
-LS_COLORS_PATH="$HOME/LS_COLORS/lscolors.sh"
+LS_COLORS_PATH="$HOME/LS_COLORS/ls_colors.sh"
 if [ -e "$LS_COLORS_PATH" ]; then
     . "$LS_COLORS_PATH"
 fi
