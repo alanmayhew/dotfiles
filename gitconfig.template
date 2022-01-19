@@ -1,12 +1,13 @@
 [user]
-	email = ~EMAIL~
-	name = Alan Mayhew
+    email = ~EMAIL~
+    name = Alan Mayhew
+    excludesFile = ~/gitignore.global
 
 [core]
-	editor = vim
+    editor = vim
 
 [alias]
-	st = status
+    st = status
     co = checkout
     ai = add -i
     stdiff = diff --staged
@@ -26,5 +27,5 @@
     deleted = red
 
 [push]
-	default = simple
+    default = simple
 
