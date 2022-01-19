@@ -143,6 +143,10 @@ vnoremap <leader>q :normal @q<CR>
 vnoremap <leader>d :g/^\s*$/d<CR>:noh<CR>
 nnoremap <leader>l :LabelComment<CR>
 nnoremap <leader><leader>l :LabelCommentFull<CR>
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 
 "==============================================================================
 "                               MAPS (PLUGINS)
@@ -299,3 +303,4 @@ let g:table_mode_corner_corner='+'
 let g:table_mode_header_fillchar='='
 let g:vim_json_syntax_conceal = 0
 let g:signify_sign_change='~'
+let g:ctrlp_by_filename=1
